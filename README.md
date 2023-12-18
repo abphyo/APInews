@@ -3,7 +3,7 @@
 ## Disclaimer
 
 This app is my practice work as a part of studying Android and doesn't invole any personnal business.
-It follows an older version of spotify app in building ui and include "https://github.com/wayou/t-rex-runner" library.
+It follows an older version of spotify app in building ui and includes "https://github.com/wayou/t-rex-runner" library.
 
 ## Overview
 
