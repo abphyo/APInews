@@ -8,7 +8,7 @@ It follows an older version of spotify app in building ui and includes "https://
 ## Overview
 
 News App is an Android application that provides users with the latest news articles from various sources. 
-It utilizes the News API to fetch real-time news data. 
+It utilizes the api provided by "https://newsapi.org" to fetch real-time news data. 
 The app is built using modern Android development principles, including Room, DataStore, Navigation Components, Hilt, and follows a clean architecture approach.
 
 ## Features
