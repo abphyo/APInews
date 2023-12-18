@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cardColor1">#FFB2B2</color> <!-- light red -->
+    <color name="cardColor2">#FFD9B2</color> <!-- light orange -->
+    <color name="cardColor3">#FFFFB2</color> <!-- light yellow -->
+    <color name="cardColor4">#B2FFB2</color> <!-- light green -->
+    <color name="cardColor5">#B2FFFF</color> <!-- light blue-green -->
+    <color name="cardColor6">#B2B2FF</color> <!-- light blue -->
+    <color name="cardColor7">#D9B2FF</color> <!-- light lavender -->
+    <color name="cardColor8">#FFB2F5</color> <!-- light magenta -->
+    <color name="cardColor9">#FFD9E8</color> <!-- light pink -->
+    <color name="cardColor10">#FFE8D9</color> <!-- light peach -->
+    <color name="cardColor11">#E8FFD9</color> <!-- light lime -->
+    <color name="cardColor12">#D9E8FF</color> <!-- light sky blue -->
+
+
+    <array name="cardColors">
+        <item>@color/cardColor1</item>
+        <item>@color/cardColor2</item>
+        <item>@color/cardColor3</item>
+        <item>@color/cardColor4</item>
+        <item>@color/cardColor5</item>
+        <item>@color/cardColor6</item>
+        <item>@color/cardColor7</item>
+        <item>@color/cardColor8</item>
+        <item>@color/cardColor9</item>
+        <item>@color/cardColor10</item>
+        <item>@color/cardColor11</item>
+        <item>@color/cardColor12</item>
+    </array>
+</resources>

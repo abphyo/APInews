@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/headlinesFragment"
+        android:enabled="true"
+        android:icon="@drawable/home_item_selector"
+        android:title="@string/top_headlines"
+        />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:enabled="true"
+        android:icon="@drawable/search_24px"
+        android:title="@string/search"
+        />
+
+    <item
+        android:id="@+id/libraryFragment"
+        android:enabled="true"
+        android:icon="@drawable/collections_bookmark_24px"
+        android:title="@string/saved_news"
+        />
+
+</menu>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="darkPrimary">#37474F</color>
+    <color name="darkPrimaryDark">#263238</color>
+    <color name="darkAccent">#FF4081</color>
+    <color name="shimmer_background">#EAEAEA</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="figma_green">#33DD9F</color>
+    <color name="figma_green_dark">#00CB51</color>
+    <color name="publisher_card">#5F5F5F</color>
+    <color name="universal_card">#5F5F5F</color>
+    <color name="publisher_text">@color/white</color>
+    <color name="navigation_background">#2D2E30</color>
+    <color name="nav_text_inactive">#A7A7A7</color>
+</resources>

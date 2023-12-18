@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/chipHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/search_in_everything"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/active_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/active_status_shape"
+            android:text="@string/activated"
+            android:textColor="@color/figma_green"
+            android:paddingHorizontal="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/chipHeader"
+            app:layout_constraintStart_toEndOf="@+id/chipHeader"
+            app:layout_constraintTop_toTopOf="@+id/chipHeader" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/searchInChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chipHeader"/>
+
+        <ImageView
+            android:id="@+id/filter_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/icon"
+            app:layout_constraintBottom_toBottomOf="@id/searchInChipGroup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/searchInChipGroup"
+            app:layout_constraintTop_toTopOf="@id/searchInChipGroup"
+            app:srcCompat="@drawable/filter_list_30px" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/statusText"
+        style="@style/utilityText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_result_status"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:contentDescription="@string/icon"
+        android:id="@+id/no_network_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/statusText"
+        app:layout_constraintEnd_toEndOf="@+id/statusText"
+        app:layout_constraintStart_toStartOf="@+id/statusText"
+        app:srcCompat="@drawable/wifi_off_50px" />
+
+    <LinearLayout
+        android:id="@+id/history_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_layout">
+
+        <TextView
+            android:id="@+id/history_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:text="@string/recent_searches" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/fragment_search_history_item" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
