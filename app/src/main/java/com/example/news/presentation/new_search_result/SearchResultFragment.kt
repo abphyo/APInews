@@ -5,13 +5,17 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.R
 import com.example.news.databinding.FragmentSearchResultBinding
 import com.example.news.domain.model.New
+import com.example.news.presentation.new_search_prep.SearchPrepViewModel
 import com.example.news.presentation.utils.ConnectivityObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -42,17 +46,17 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
                     ConnectivityObserver.Status.LOST -> {
                         renderError(getString(R.string.connection_lost))
                     }
-                    else -> renderResult()
+                    else -> updateResult()
                 }
             }
         }
     }
 
-    private fun renderResult() {
+    private fun updateResult() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest {
-                    with(it) {
+                viewModel.uiState.collectLatest { uiState ->
+                    with(uiState) {
                         when {
                             isLoading -> loading()
                             error.isNotEmpty() -> renderError(error)
@@ -87,6 +91,7 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
     }
 
     private fun renderSuccess(list: List<New>) {
+        println("result list: $list")
         binding.resultProgressIndicator.isVisible = false
         binding.noNetworkIcon.isVisible = false
         binding.statusText.isVisible = false

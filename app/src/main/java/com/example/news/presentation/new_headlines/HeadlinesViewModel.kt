@@ -44,6 +44,7 @@ class HeadlinesViewModel @Inject constructor(
             remoteFlow.combine(getFromDatabase.invoke()) { remote, local ->
                 Pair(remote, local)
             }.collectLatest { pair ->
+                println("headline pair triggered")
                 pair.first.onSuccess { data ->
                     val databaseMap = pair.second.associateBy { it.url }
                     val updatedData = data.map {
@@ -78,12 +79,10 @@ class HeadlinesViewModel @Inject constructor(
 
     fun bookmarkNew(new: New) {
         handleBookmark(new.copy(isBookmark = true))
-        updateBookmarkStatus(new, true)
     }
 
     fun unBookmarkNew(new: New) {
         handleBookmark(new.copy(isBookmark = false))
-        updateBookmarkStatus(new, false)
     }
 
     private fun handleBookmark(new: New) {
@@ -97,16 +96,5 @@ class HeadlinesViewModel @Inject constructor(
             }
         }
     }
-
-    private fun updateBookmarkStatus(new: New, isBookmark: Boolean) {
-        _uiState.update { uiState ->
-            uiState.copy(
-                uiList = uiState.uiList.map {
-                    if (it == new) it.copy(isBookmark = isBookmark) else it
-                }
-            )
-        }
-    }
-
 }
 

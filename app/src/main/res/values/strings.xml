@@ -53,4 +53,9 @@
     <string name="delete">Delete</string>
     <string name="add_to_bookmark">Add to bookmark</string>
     <string name="bookmarked">Bookmarked</string>
+    <string name="to">to</string>
+    <string name="set_the_time_period_which_you_want_news_from">/set the time period which you want news from</string>
+    <string name="select_the_language_you_want_to_get_news_for">/select the language you want to get news for</string>
+    <string name="filter_cancel">Cancel</string>
+    <string name="filter_apply">Apply</string>
 </resources>

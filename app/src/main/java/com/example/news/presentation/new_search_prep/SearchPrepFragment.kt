@@ -11,6 +11,8 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -19,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.R
 import com.example.news.databinding.FragmentSearchPrepBinding
 import com.example.news.presentation.model.SearchInType
-import com.example.news.presentation.new_search_result.SearchPrepViewModel
 import com.example.news.presentation.utils.ConnectivityObserver
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,8 @@ class SearchPrepFragment :
                 addView(createChip(it, viewModel.searchIn.value.contains(it.searchIn)))
             }
         }
-        initUi()
+        activateFilter()
+        checkHistory()
         checkNetwork()
     }
 
@@ -85,7 +87,13 @@ class SearchPrepFragment :
         }
     }
 
-    private fun initUi() {
+    private fun activateFilter() {
+        binding.filterIcon.setOnClickListener {
+            FilterDialogFragment().show(childFragmentManager, FilterDialogFragment.TAG)
+        }
+    }
+
+    private fun checkHistory() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.searchHistory.collectLatest { state ->
@@ -129,12 +137,6 @@ class SearchPrepFragment :
         chip.isCheckable = true
         chip.isCheckedIconVisible = false
         chip.isChecked = checked
-//        chip.setChipDrawable(ChipDrawable.createFromAttributes(
-//            requireContext(),
-//            null,
-//            0,
-//            R.style.chip_item_style
-//        ))
         chip.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) viewModel.addToSearchIn(type)
             else viewModel.removeFromSearchIn(type)

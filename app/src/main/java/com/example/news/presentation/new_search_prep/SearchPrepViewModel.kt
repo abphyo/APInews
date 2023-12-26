@@ -1,4 +1,4 @@
-package com.example.news.presentation.new_search_result
+package com.example.news.presentation.new_search_prep
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -49,9 +48,6 @@ class SearchPrepViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(GenericUiState<New>())
     val uiState: StateFlow<GenericUiState<New>> get() = _uiState.asStateFlow()
 
-    private val _query = MutableStateFlow("")
-    val query: StateFlow<String> get() = _query.asStateFlow()
-
     init {
         getSearchHistory()
         observeNetwork()
@@ -76,37 +72,34 @@ class SearchPrepViewModel @Inject constructor(
                 list.joinToString(separator = ",") { it }
             } else ""
             println("searchIn: $searchIn")
-            viewModelScope.launch {
-                networkStatus.collectLatest {
-                    if (it == ConnectivityObserver.Status.AVAILABLE) {
-                        updateUiState(
-                            getByEverythingSearch(
-                                keyword = query,
-                                searchIn = searchIn
-                            )
-                        )
-                    }
-                }
-            }
+            updateUiState(
+                getByEverythingSearch(
+                    keyword = query,
+                    searchIn = searchIn
+                )
+            )
         }
     }
 
     private fun updateUiState(remoteFlow: Flow<Result<List<New>>>) {
         viewModelScope.launch {
             _uiState.update { GenericUiState(isLoading = true) }
-            remoteFlow.combine(getFromDatabase.invoke()) { remote, local ->
-                Pair(remote, local)
-            }.collectLatest { pair ->
-                pair.first.onSuccess { data ->
-                    val databaseMap = pair.second.associateBy { it.url }
-                    val updatedData = data.map {
-                        databaseMap[it.url] ?: it
-                    }
-                    _uiState.update {
-                        GenericUiState(
-                            uiList = updatedData,
-                            isLoading = false
-                        )
+            remoteFlow.collectLatest { result ->
+                result.onSuccess { remoteData ->
+                    println("remoteData: $remoteData")
+                    getFromDatabase().collectLatest { localData ->
+                        println("database flow triggered")
+                        val databaseMap = localData.associateBy { it.url }
+                        val updatedData = remoteData.map {
+                            databaseMap[it.url] ?: it
+                        }
+                        println("updated data: $updatedData")
+                        _uiState.update {
+                            GenericUiState(
+                                uiList = updatedData,
+                                isLoading = false
+                            )
+                        }
                     }
                 }.onFailure { throwable ->
                     _uiState.update {
@@ -130,33 +123,20 @@ class SearchPrepViewModel @Inject constructor(
 
     fun bookmarkNew(new: New) {
         handleBookmark(new.copy(isBookmark = true))
-        updateBookmarkStatus(new, true)
     }
 
     fun unBookmarkNew(new: New) {
         handleBookmark(new.copy(isBookmark = false))
-        updateBookmarkStatus(new, false)
     }
 
     private fun handleBookmark(new: New) {
         viewModelScope.launch {
             with(new) {
                 when {
-                    isBookmark -> saveToDatabase(new)
-                    isFav -> {}
+                    isBookmark or isFav -> saveToDatabase(new)
                     else -> deleteFromDatabase(new)
                 }
             }
-        }
-    }
-
-    private fun updateBookmarkStatus(new: New, isBookmark: Boolean) {
-        _uiState.update { uiState ->
-            uiState.copy(
-                uiList = uiState.uiList.map {
-                    if (it == new) it.copy(isBookmark = isBookmark) else it
-                }
-            )
         }
     }
 

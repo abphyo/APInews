@@ -1,9 +1,12 @@
 package com.example.news.presentation
 
+import android.content.Intent
 import android.content.res.Resources
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
@@ -80,6 +83,18 @@ class MainActivity : AppCompatActivity() {
     override fun getTheme(): Resources.Theme {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         return super.getTheme()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (Intent.ACTION_VIEW == intent?.action) {
+            val uri = intent?.data
+            if (uri != null) {
+                val url = uri.toString()
+                // Process the URL as needed
+                Toast.makeText(this, "Received URL: $url", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 //        NavigationUI.setupActionBarWithNavController(
