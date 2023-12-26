@@ -2,6 +2,9 @@ package com.example.news.di
 
 import android.content.Context
 import androidx.room.Room
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.chuckerteam.chucker.api.RetentionManager
 import com.example.news.common.Constants
 import com.example.news.data.local.NewsDB
 import com.example.news.data.local.dao.NewDao
@@ -23,6 +26,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -34,12 +38,40 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideClient(): OkHttpClient {
+    fun provideChuckerInterceptor(context: Context): ChuckerInterceptor {
+        val chuckerCollector = ChuckerCollector(
+            context = context,
+            // Toggles visibility of the notification
+            showNotification = true,
+            // Allows to customize the retention period of collected data
+            retentionPeriod = RetentionManager.Period.ONE_HOUR
+        )
+        return ChuckerInterceptor.Builder(context)
+            // The previously created Collector
+            .collector(chuckerCollector)
+            // The max body content length in bytes, after this responses will be truncated.
+            .maxContentLength(250_000L)
+            // List of headers to replace with ** in the Chucker UI
+            .redactHeaders("Auth-Token", "Bearer")
+            // Read the whole response body even when the client does not consume the response completely.
+            // This is useful in case of parsing errors or when the response body
+            // is closed before being read like in Retrofit with Void and Unit types.
+            .alwaysReadResponseBody(true)
+            // Use decoder when processing request and response bodies. When multiple decoders are installed they
+            // are applied in an order they were added.
+            .createShortcut(true)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideClient(chucker: ChuckerInterceptor): OkHttpClient {
         val loggingInterceptor = LoggingInterceptor()
         val headerInterceptor = HeaderInterceptor(Constants.API_KEY_2)
         return OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(chucker)
             .build()
     }
     @Provides
