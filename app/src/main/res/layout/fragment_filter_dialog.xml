@@ -96,7 +96,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
-        android:background="?android:attr/listDivider"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/to_date_ly" />
@@ -129,6 +129,7 @@
         android:id="@+id/languageChipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:singleSelection="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -144,7 +145,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
-        android:background="?android:attr/listDivider"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/languageChipGroup" />
@@ -156,6 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/filter_apply"
         android:textColor="@color/figma_green"
         app:layout_constraintEnd_toEndOf="parent"

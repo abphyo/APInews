@@ -11,8 +11,6 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -66,7 +64,7 @@ class SearchPrepFragment :
                 binding.filterLayout.isVisible = false
                 binding.historyLayout.isVisible = false
                 searchView.clearFocus()
-                viewModel.updateResultEverything(query ?: "")
+                viewModel.query.value = query
                 viewModel.pushToQueue(query ?: "")
                 findNavController().navigate(
                     SearchPrepFragmentDirections.actionSearchPrepFragmentToSearchResultFragment()

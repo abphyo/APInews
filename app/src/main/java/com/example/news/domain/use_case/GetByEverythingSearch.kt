@@ -9,15 +9,22 @@ import javax.inject.Inject
 class GetByEverythingSearch @Inject constructor(private val remoteRepo: RemoteRepoImpl) {
     operator fun invoke(
         keyword: String,
-        searchIn: String
+        searchIn: String,
+        from: String,
+        to: String,
+        domains: String,
+        language: String,
+        sortBy: String
         ): Flow<Result<List<New>>> = flow {
             emit(
                 remoteRepo.getByEverythingSearch(
                     keyword = keyword,
                     searchIn = searchIn,
-                    from = "",
-                    to = "",
-                    domains = ""
+                    from = from,
+                    to = to,
+                    domains = domains,
+                    language = language,
+                    sortBy = sortBy
                 )
             )
     }

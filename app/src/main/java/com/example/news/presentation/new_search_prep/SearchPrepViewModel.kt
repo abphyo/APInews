@@ -1,19 +1,23 @@
 package com.example.news.presentation.new_search_prep
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.news.domain.model.New
 import com.example.news.domain.use_case.DeleteFromDatabase
 import com.example.news.domain.use_case.GetByEverythingSearch
 import com.example.news.domain.use_case.GetByHeadlinesSearch
+import com.example.news.domain.use_case.GetFilterInstance
 import com.example.news.domain.use_case.GetFromDatabase
+import com.example.news.domain.use_case.SaveFilterInstance
 import com.example.news.domain.use_case.SaveToDatabase
 import com.example.news.presentation.model.HistoryState
 import com.example.news.presentation.model.SearchInType
 import com.example.news.presentation.utils.ConnectivityObserver
 import com.example.news.presentation.utils.DataStoreManager
-import com.example.news.presentation.utils.GenericUiState
+import com.example.news.presentation.model.GenericUiState
+import com.example.news.domain.model.SearchFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +36,9 @@ class SearchPrepViewModel @Inject constructor(
     private val getByEverythingSearch: GetByEverythingSearch,
     private val getFromDatabase: GetFromDatabase,
     private val saveToDatabase: SaveToDatabase,
-    private val deleteFromDatabase: DeleteFromDatabase
+    private val deleteFromDatabase: DeleteFromDatabase,
+    private val getFilterInstance: GetFilterInstance,
+    private val saveFilterInstance: SaveFilterInstance
 ): ViewModel() {
     private val dataStore = DataStoreManager(application)
 
@@ -48,9 +54,31 @@ class SearchPrepViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(GenericUiState<New>())
     val uiState: StateFlow<GenericUiState<New>> get() = _uiState.asStateFlow()
 
+    private val _filterInstance = MutableStateFlow(SearchFilter())
+    val filterInstance: StateFlow<SearchFilter> get() = _filterInstance.asStateFlow()
+
+    val query = mutableStateOf<String?>(null)
+
     init {
+        getFilterInstance()
         getSearchHistory()
         observeNetwork()
+    }
+
+    private fun getFilterInstance() {
+        viewModelScope.launch {
+            getFilterInstance.invoke().collectLatest { obj ->
+                println("filter: $obj")
+               _filterInstance.update { obj ?: SearchFilter() }
+            }
+        }
+    }
+
+    fun saveFilterInstance(searchFilter: SearchFilter) {
+        viewModelScope.launch {
+            println("save filter: $searchFilter")
+            saveFilterInstance.invoke(searchFilter)
+        }
     }
 
     private fun observeNetwork() {
@@ -62,22 +90,38 @@ class SearchPrepViewModel @Inject constructor(
         }
     }
 
+    fun search() {
+        viewModelScope.launch {
+            networkStatus.collectLatest {
+                if (it == ConnectivityObserver.Status.AVAILABLE) {
+                    updateResultEverything(query.value ?: "")
+                }
+            }
+        }
+    }
+
     fun updateResultHeadlines(query: String) {
         updateUiState(getByHeadlinesSearch(keyword = query))
     }
 
-    fun updateResultEverything(query: String) {
+    private fun updateResultEverything(query: String) {
         searchIn.value.let { list ->
             val searchIn = if (list.isNotEmpty()) {
                 list.joinToString(separator = ",") { it }
             } else ""
-            println("searchIn: $searchIn")
-            updateUiState(
-                getByEverythingSearch(
-                    keyword = query,
-                    searchIn = searchIn
+            filterInstance.value.let { filter ->
+                updateUiState(
+                    getByEverythingSearch(
+                        keyword = query,
+                        searchIn = searchIn,
+                        from = filter.from,
+                        to = filter.to,
+                        domains = "",
+                        language = filter.language,
+                        sortBy = ""
+                    )
                 )
-            )
+            }
         }
     }
 

@@ -6,7 +6,5 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetFromDatabase @Inject constructor(private val repo: DatabaseRepoImpl) {
-    operator fun invoke(): Flow<List<New>> {
-        return repo.getAllNews()
-    }
+    operator fun invoke(): Flow<List<New>> = repo.getAllNews()
 }

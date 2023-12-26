@@ -5,13 +5,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news.R
 import com.example.news.databinding.FragmentSearchResultBinding
 import com.example.news.domain.model.New
@@ -37,6 +34,7 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
         binding.statusText.isVisible = false
         binding.noNetworkIcon.isVisible = false
         binding.chromeDino.isVisible = false
+        viewModel.search()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.networkStatus.collectLatest {
                 when(it) {
@@ -110,4 +108,5 @@ class SearchResultFragment : Fragment(R.layout.fragment_search_result) {
     private fun playGame() {
         findNavController().navigate(SearchResultFragmentDirections.actionGlobalGameFragment())
     }
+
 }

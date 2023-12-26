@@ -18,12 +18,12 @@ class DataStoreManager(context: Context) {
     private val dataStore = context.dataStore
 
     companion object PreferenceKeys {
-        val LIST_KEY = stringSetPreferencesKey("STRING_LIST_KEY")
+        val SEARCH_HISTORY_KEY = stringSetPreferencesKey("SEARCH_HISTORY_KEY")
     }
 
     suspend fun setStringList(list: MutableList<String>) {
         dataStore.edit { pref ->
-            pref[LIST_KEY] = list.toSet()
+            pref[SEARCH_HISTORY_KEY] = list.toSet()
         }
     }
 
@@ -33,7 +33,7 @@ class DataStoreManager(context: Context) {
                 if (exception is IOException) emit(emptyPreferences())
                 else throw exception
             }.map { pref ->
-                val set = pref[LIST_KEY] ?: emptySet()
+                val set = pref[SEARCH_HISTORY_KEY] ?: emptySet()
                 set.toMutableList()
             }
     }

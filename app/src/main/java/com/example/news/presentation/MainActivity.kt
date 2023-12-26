@@ -2,7 +2,6 @@ package com.example.news.presentation
 
 import android.content.Intent
 import android.content.res.Resources
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return super.onSupportNavigateUp() || navController.navigateUp()
+        return navController.popBackStack()
     }
 
     override fun getTheme(): Resources.Theme {
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (Intent.ACTION_VIEW == intent?.action) {
-            val uri = intent?.data
+            val uri = intent.data
             if (uri != null) {
                 val url = uri.toString()
                 // Process the URL as needed

@@ -8,7 +8,7 @@ import com.example.news.domain.use_case.GetFromDatabase
 import com.example.news.domain.use_case.GetHeadlines
 import com.example.news.domain.use_case.SaveToDatabase
 import com.example.news.presentation.model.CategoryType
-import com.example.news.presentation.utils.GenericUiState
+import com.example.news.presentation.model.GenericUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -26,7 +26,9 @@ interface NewsApi {
         @Query("searchIn") searchIn: String = "",
         @Query("from") from: String = "",
         @Query("to") to: String = "",
-        @Query("domains") domains: String = ""
+        @Query("domains") domains: String = "",
+        @Query("language") language: String = "",
+        @Query("sortBy") sortBy: String = ""
     ): Response<NewListDto>
 
     @GET("v2/top-headlines/sources")

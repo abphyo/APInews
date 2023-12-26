@@ -1,4 +1,4 @@
-package com.example.news.presentation.utils
+package com.example.news.presentation.model
 
 data class GenericUiState<T> (
     val uiList: List<T> = emptyList(),

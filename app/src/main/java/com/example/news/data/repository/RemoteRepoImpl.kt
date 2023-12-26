@@ -36,7 +36,9 @@ class RemoteRepoImpl @Inject constructor(private val api: NewsApi): ApiCall() {
         searchIn: String,
         from: String,
         to: String,
-        domains: String
+        domains: String,
+        language: String,
+        sortBy: String
     ): Result<List<New>> {
         return when (val response = toDomain {
             api.getByEverythingSearch(
@@ -44,7 +46,9 @@ class RemoteRepoImpl @Inject constructor(private val api: NewsApi): ApiCall() {
                 searchIn = searchIn,
                 from = from,
                 to = to,
-                domains = domains
+                domains = domains,
+                language = language,
+                sortBy = sortBy
             )
         }) {
             is DomainResponse.Success -> {

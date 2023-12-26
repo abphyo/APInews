@@ -29,7 +29,7 @@ class LibraryViewModel @Inject constructor(
         updateUiState()
     }
 
-    fun updateUiState() {
+    private fun updateUiState() {
         viewModelScope.launch {
             getFromDatabase.invoke().collectLatest { list ->
                 _uiState.update { list }

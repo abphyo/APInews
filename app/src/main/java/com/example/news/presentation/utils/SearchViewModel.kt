@@ -6,6 +6,7 @@ import com.example.news.domain.model.Publisher
 import com.example.news.domain.use_case.GetPublishers
 import com.example.news.presentation.model.CategoryType
 import com.example.news.presentation.model.CountryType
+import com.example.news.presentation.model.GenericUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
